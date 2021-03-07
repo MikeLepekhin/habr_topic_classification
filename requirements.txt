@@ -1,0 +1,5 @@
+razdel
+tqdm
+matplotlib
+numpy
+pickle
