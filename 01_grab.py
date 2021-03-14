@@ -8,13 +8,14 @@ import requests
 
 def download_document(pid):
     """ Download and process a Habr document and its comments """
-
-    r = requests.get('https://habrahabr.ru/post/' +str(pid) + '/')
-
-    soup = BeautifulSoup(r.text, 'html5lib')
+    # выгрузка документа
+    r = requests.get('https://habrahabr.ru/post/' + str(pid) + '/')
+    # парсинг документа
+    soup = BeautifulSoup(r.text, 'html5lib') # instead of html.parser
     doc = {}
     doc['id'] = pid
     if not soup.find("span", {"class": "post__title-text"}):
+        # такое бывает, если статья не существовала или удалена
         doc['status'] = 'title_not_found'
     else:
         doc['status'] = 'ok'
@@ -25,9 +26,14 @@ def download_document(pid):
         doc['likes'] = soup.find("span", {"class": "voting-wjt__counter"}).text
     
     if 'hubs' in doc:    
-        fname = r'files/' + str(pid) + '.pkl'
-        with open(fname, 'wb') as f:
+        # сохранение результата в отдельный файл
+        clean_filename = r'clean_files/' + str(pid) + '.pkl'
+        with open(clean_filename, 'wb') as f:
             pickle.dump(doc, f)
+        
+        html_filename = r'html_files/' + str(pid) + '.pkl'
+        with open(html_filename, 'w') as html_out:
+            html_out.write(r.text)
             
 def main():
     print("### parsing started")
