@@ -39,7 +39,7 @@ def main():
     print("### parsing started")
     
     with Pool(10) as p:
-        docs = p.map(download_document, np.arange(150000, 500000))
+        docs = p.imap_unordered(download_document, np.arange(150000, 545000))
         
     print("### parsing finished")
         
