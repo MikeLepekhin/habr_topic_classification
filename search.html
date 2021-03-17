@@ -1,0 +1,72 @@
+<html>
+    <style>
+        #header {
+          text-align: center;
+          vertical-align: middle;
+          color: white;
+          background-color: #2e4053;
+          height: 70;
+          font-size: 36;
+        }
+
+        #document_list {
+          background-color: #aed6f1;
+          margin: auto;
+          width: 50%;
+        }
+
+        .page_link {
+          color: #2e4053
+        }  
+
+        .page_link:hover {
+          color: #aed6f1
+        }   
+
+        .page_link:focus {
+          color: blue
+        }   
+    </style>
+
+    <body>
+        <div align="center" id="header">
+            Учебный корпус Habr.com
+        </div>  
+
+        <div align="center">
+            <form action="/send_request" method="post">
+               <p>Ваш запрос</p>
+               <p><input type="text" name="query" value="{{query}}"/></p>
+               <p><input type="submit" value="Поиск" id="search_button"/></p>
+            </form> 
+        </div>  
+
+        <div align="center">Найдено документов: {{results_num}}</div>
+        {% if pages_num > 1 %}
+        <div align="center">
+            {% if current_page_id > 1 %}
+	        <a href="{{full_path.replace('[PAGE_NUM]', (current_page_id-1)|string)}}" class="page_link"><<Назад</a>
+	        {% endif %}
+	        {% for page_id in range((current_page_id//10)*10 + 1, [(current_page_id//10+1)*10, pages_num]|min + 1) %}
+	        <a href="{{full_path.replace('[PAGE_NUM]', page_id|string)}}" class="page_link">{{page_id}}</a>
+	        {% endfor %}
+            {% if current_page_id < pages_num %}
+	        <a href="{{full_path.replace('[PAGE_NUM]', (current_page_id+1)|string)}}" class="page_link">Вперёд >></a>
+	        {% endif %}
+        </div>
+        {% endif %}
+
+        {% if results_num > 1 %}
+        <div id="document_list">
+            {% for document in documents %}
+            <div>
+                <h3>{{document.title}}</h3>
+                <span>{{document.text.split()[:100]|join(' ')}}...</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div align="center">По Вашему запросу нет ответов. Попробуйте его переформулировать.</div>
+        {% endif %}
+    </body>
+</html>
