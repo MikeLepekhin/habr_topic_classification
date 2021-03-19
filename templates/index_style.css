@@ -1,0 +1,45 @@
+#header {
+  text-align: center;
+  vertical-align: middle;
+  color: white;
+  background-color: #2e4053;
+  height: 70;
+  font-size: 36;
+}
+
+#document_list {
+  background-color: #aed6f1;
+  margin: auto;
+  width: 50%;
+}
+
+.page_link {
+  color: #2e4053;
+  text-decoration: none;
+}  
+
+.page_link:hover {
+  color: #aed6f1
+}   
+
+.page_link:focus {
+  color: blue
+}   
+
+.current_page_link: {
+  color: blue;
+  text-decoration: none;
+}   
+
+.current_page_link:hover {
+  color: #aed6f1
+}   
+
+.document_bottom {
+  background-color: white
+}   
+
+.doc_title {
+    color: grey;
+    text-decoration: none;
+}

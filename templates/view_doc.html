@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <title>{{document.title}}</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='index_style.css') }}">
+    </head>
+
+    <body>
+        <a href="/">
+            <div align="center" id="header">
+                Учебный корпус Habr.com
+            </div>  
+        </a>
+
+        <div>
+            {% if document %}
+            <font color="grey" size="2">{{document.time}}</font>
+            <h3>
+                <a href="/view_doc?id={{document.doc_id}}" class="doc_title">{{document.title}}</a>
+                <font color={{"green" if document.likes|int > 0 else "red"}}>{{document.likes}}</font>
+            </h3>
+            <span>{{document.text}}</span>
+ 	        <div class="document_bottom">
+                {% for hub in document.hubs %}
+                <a href="/?cat={{hub}}" class="page_link">{{hub}}</a>
+                {% if hub != document.hubs[-1] %}|{% endif %}
+                {% endfor %}
+            </div>
+            {% else %}
+            Документ не найден
+            {% endif %}
+        </div>
+    </body>
+</html>
