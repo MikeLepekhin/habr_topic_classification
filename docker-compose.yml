@@ -25,6 +25,8 @@ services:
 
   flaskfront:
     build: ./search/front/.
+    volumes:
+      - ./clean_files/:/tmp/clean_files/
     networks:
       - elastic_network
     ports:
