@@ -1,0 +1,41 @@
+{
+    "habrhabr_posts": {
+        "mappings": {
+            "properties": {
+                "title": {
+                    "type": "text",
+                    "fields": {
+                        "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                        }
+                    },
+                    "analyzer": "default",
+                    "search_analyzer": "default_search"
+                },
+                "text": {
+                    "type": "text",
+                    "fields": {
+                        "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                        }
+                    },
+                    "analyzer": "default",
+                    "search_analyzer": "default_search"
+                },
+                "hubs": {
+                    "type": "text",
+                    "fields": {
+                        "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                        }
+                    },
+                    "analyzer": "default",
+                    "search_analyzer": "default_search"
+                }
+            }
+        }
+    }
+}

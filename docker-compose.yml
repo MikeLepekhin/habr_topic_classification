@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    container_name: elasticsearch
+    volumes:
+      - ./search/elastic/hunspell/:/usr/share/elasticsearch/config/hunspell/
+    environment:
+      - discovery.type=single-node
+    networks:
+      - elastic_network
+    ports:
+      - 9200:9200
+      - 9300:9300
+  
+  filler:
+    build: ./search/elastic/.
+    networks:
+      - elastic_network
+    volumes:
+      - ./clean_files/:/tmp/clean_files/
+    depends_on:
+      - elasticsearch
+
+  flaskfront:
+    build: ./search/front/.
+    networks:
+      - elastic_network
+    ports:
+      - 5000:5000
+
+
+networks:
+  elastic_network:
+    driver: bridge
