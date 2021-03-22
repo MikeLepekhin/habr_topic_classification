@@ -1,7 +1,7 @@
 FROM python:3.6.5
 
 RUN pip3.6 install --upgrade pip
-RUN pip3 install flask numpy
+RUN pip3 install flask numpy elasticsearch
 
 COPY . ./front
 WORKDIR ./front

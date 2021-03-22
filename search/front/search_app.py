@@ -7,7 +7,8 @@ from flask import redirect
 from flask import render_template
 from flask import request
 
-from linear_search import *
+#from linear_search import *
+from queries import Query
 from os import listdir
 
 DATA_DIR = '/tmp/clean_files' #'../../clean_files'
@@ -30,13 +31,16 @@ def get_like_value(like_str):
 
 @app.route('/')
 def search_form():
+    query = Query('elasticsearch', 9200)
+
     param_dict = request.args.to_dict()
     current_query = param_dict['q'].strip() if 'q' in param_dict else ''
     current_cat = param_dict['cat'].strip().lower() if 'cat' in param_dict else ''
     
-    documents, filenames = get_relevant_documents(current_query, DATA_DIR) 
-    for document, filename in zip(documents, filenames):
-        document["doc_id"] = filename[:filename.find('.')]
+    #documents, filenames = get_relevant_documents(current_query, DATA_DIR)
+    documents = query.get_by_title(current_query)
+    #for document, filename in zip(documents, filenames):
+    #    document["doc_id"] = filename[:filename.find('.')]
 
     for document in documents:
         document["hubs"] = parse_hubs(document["hubs"])
