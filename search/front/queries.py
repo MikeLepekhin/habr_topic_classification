@@ -28,7 +28,7 @@ class Query:
     #   -1 - искать полное совпадение,
     #   0 - искать полное вхождение в текст,
     #   >0 искать вхождение в текст с возмодностью slop пропусков между словами
-    def get_by_tag_content(self, tag, query, relevant_hubs=None, slop=0):
+    def get_by_tag_content(self, tag, query, relevant_hubs=None, slop=0, size=9000):
         if relevant_hubs:
             hubs_query = {'query': {'bool': {'should': [
 			{'match_phrase': {"hubs": {'query': hub, 'operator': 'and'}}} for hub in relevant_hubs]}}}
@@ -47,6 +47,7 @@ class Query:
         else:
             query_object = {'query': query_object}
 
+        query_object["size"] = size
         res = self.es.search(index=self.index_name, body=query_object)
         return self.parse_out(res)
 
@@ -65,7 +66,7 @@ class Query:
         # Перестраховка
         return [text for text in res if query in self.parse_hubs(query['hubs'])]
         
-    def et_by_id(self, doc_id):
+    def get_by_id(self, doc_id):
         res = self.get_by_tag_content('doc_id', doc_id, slop=0)
         assert len(res) == 1
         return res[0]

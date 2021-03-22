@@ -76,10 +76,10 @@ def view_doc():
     param_dict = request.args.to_dict()
     current_doc = param_dict['id'].strip() if 'id' in param_dict else ''
     
-    try:
-        document = query.get_by_id(current_doc)
-    except:
-        return render_template("view_doc.html", document=None)
+    # try:
+    document = query.get_by_id(current_doc)
+    # except:
+    #     return render_template("view_doc.html", document=None)
 
     document["doc_id"] = current_doc
     document["hubs"] = parse_hubs(document["hubs"])
