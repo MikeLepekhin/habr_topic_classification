@@ -2,6 +2,17 @@
     "habrhabr_posts": {
         "mappings": {
             "properties": {
+                "doc_id": {
+                    "type": "text",
+                    "fields": {
+                        "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                        }
+                    },
+                    "analyzer": "default",
+                    "search_analyzer": "default_search"
+                },
                 "title": {
                     "type": "text",
                     "fields": {
@@ -25,6 +36,28 @@
                     "search_analyzer": "default_search"
                 },
                 "hubs": {
+                    "type": "text",
+                    "fields": {
+                        "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                        }
+                    },
+                    "analyzer": "default",
+                    "search_analyzer": "default_search"
+                },
+                "likes": {
+                    "type": "text",
+                    "fields": {
+                        "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                        }
+                    },
+                    "analyzer": "default",
+                    "search_analyzer": "default_search"
+                },
+                "time": {
                     "type": "text",
                     "fields": {
                         "keyword": {

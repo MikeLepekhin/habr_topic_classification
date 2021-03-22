@@ -7,36 +7,7 @@ class Query:
         self.es = Elasticsearch(hosts)
         assert self.es.ping(), f"Query.__init__: Can not connect to {host}:{port}"
 
-        self.__set_structure()
-        if not self.es.indices.exists(index_name):
-            self.es.indices.create(index=index_name, body=self.structure)
-        self.index_name = index_name
-
-    def __set_structure(self):
-        self.structure = {
-            "mappings": {
-                "properties": {
-                    'status': {
-                        "type": "text"
-                    },
-                    'title': {
-                        "type": "text"
-                    },
-                    'text': {
-                        "type": "text"
-                    },
-                    'time': {
-                        "type": "text"
-                    },
-                    'hubs': {
-                        "type": "text"
-                    },
-                    'likes': {
-                        "type": "text"
-                    }
-                }
-            }
-        }
+        self.index_name = 'habrhabr_posts'
 
     @staticmethod
     def parse_out(res):
@@ -90,6 +61,12 @@ class Query:
         return res
 
     def get_by_hub(self, query):
-        res = self.get_by_tag_content('hubs', query, 0)
+        res = self.get_by_tag_content('hubs', query, slop=0)
         # Перестраховка
         return [text for text in res if query in self.parse_hubs(query['hubs'])]
+        
+    def et_by_id(self, doc_id):
+        res = self.get_by_tag_content('doc_id', doc_id, slop=0)
+        assert len(res) == 1
+        return res[0]
+

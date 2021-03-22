@@ -7,11 +7,10 @@ from flask import redirect
 from flask import render_template
 from flask import request
 
-#from linear_search import *
 from queries import Query
 from os import listdir
 
-DATA_DIR = '/tmp/clean_files' #'../../clean_files'
+#DATA_DIR = '/tmp/clean_files' #'../../clean_files'
 
 
 app = Flask(__name__, template_folder='templates', static_folder='templates')
@@ -37,10 +36,7 @@ def search_form():
     current_query = param_dict['q'].strip() if 'q' in param_dict else ''
     current_cat = param_dict['cat'].strip().lower() if 'cat' in param_dict else ''
     
-    #documents, filenames = get_relevant_documents(current_query, DATA_DIR)
     documents = query.get_by_title(current_query)
-    #for document, filename in zip(documents, filenames):
-    #    document["doc_id"] = filename[:filename.find('.')]
 
     for document in documents:
         document["hubs"] = parse_hubs(document["hubs"])
@@ -75,12 +71,13 @@ def redirect_to_results():
 
 @app.route('/view_doc')
 def view_doc():
+    query = Query('elasticsearch', 9200)
+
     param_dict = request.args.to_dict()
     current_doc = param_dict['id'].strip() if 'id' in param_dict else ''
     
     try:
-        print(listdir(DATA_DIR))
-        document = pickle.load(open(os.path.join(DATA_DIR, f'{current_doc}.pkl'), 'rb'))
+        document = query.get_by_id(current_doc)
     except:
         return render_template("view_doc.html", document=None)
 

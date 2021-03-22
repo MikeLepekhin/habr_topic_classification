@@ -42,9 +42,12 @@ def generate_actions():
         '_type' : '_doc',
         '_id' : "0",
         '_source' : {
+            'doc_id' : "",
             'title' : "",
             'text' : "",
-            'hubs' : ""
+            'hubs' : "",
+            'likes' : "",
+            'time' : ""
         }
     }
 
@@ -52,9 +55,12 @@ def generate_actions():
         one_file = pickle.load(open(os.path.join(FILES, filename), 'rb'))
         response['_id'] = str(one_file['id'])
         response['_source'] = {
+            'doc_id' : filename[:filename.find('.')],
             'title' : one_file['title'],
             'text' : one_file['text'],
-            'hubs' : one_file['hubs']
+            'hubs' : one_file['hubs'],
+            'likes' : one_file['likes'],
+            'time' : one_file['time']
         }
         yield response
 
