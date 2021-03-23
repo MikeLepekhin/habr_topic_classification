@@ -1,0 +1,106 @@
+{
+    "habrhabr_posts": {
+        "settings": {
+            "index": {
+                "mapping": {
+                    "total_fields": {
+                        "limit": "1000"
+                    }
+                },
+                "refresh_interval": "1s",
+                "number_of_shards": "1",
+                "analysis": {
+                    "filter": {
+                        "ru_RU": {
+                            "type": "hunspell",
+                            "language": "ru_RU"
+                        },
+                        "custom_word_delimiter": {
+                            "split_on_numerics": "false",
+                            "generate_word_parts": "true",
+                            "preserve_original": "true",
+                            "catenate_words": "true",
+                            "generate_number_parts": "true",
+                            "catenate_all": "true",
+                            "split_on_case_change": "true",
+                            "type": "word_delimiter",
+                            "catenate_numbers": "false"
+                        },
+                        "ru_stopwords": {
+                            "type": "stop",
+                            "stopwords": "_russian_"
+                        }
+                    },
+                    "char_filter": {
+                        "e_char_filter": {
+                            "type": "mapping",
+                            "mappings": [
+                                "Ё => Е",
+                                "ё => е"
+                            ]
+                        }
+                    },
+                    "analyzer": {
+                        "default_search": {
+                            "filter": [
+                                "custom_word_delimiter",
+                                "lowercase",
+                                "ru_stopwords",
+                                "ru_RU"
+                            ],
+                            "alias": [
+                                "search_ru"
+                            ],
+                            "char_filter": [
+                                "e_char_filter"
+                            ],
+                            "type": "custom",
+                            "tokenizer": "standard"
+                        },
+                        "default": {
+                            "filter": [
+                                "custom_word_delimiter",
+                                "lowercase",
+                                "ru_stopwords",
+                                "ru_RU"
+                            ],
+                            "alias": [
+                                "index_ru"
+                            ],
+                            "char_filter": [
+                                "e_char_filter"
+                            ],
+                            "type": "custom",
+                            "tokenizer": "standard"
+                        },
+                        "simple_lower": {
+                            "filter": [
+                                "custom_word_delimiter",
+                                "lowercase"
+                            ],
+                            "alias": [
+                                "simple_ru"
+                            ],
+                            "char_filter": [
+                                "e_char_filter"
+                            ],
+                            "type": "custom",
+                            "tokenizer": "standard"
+                        }
+                    },
+                    "tokenizer": {
+                        "autocomplete": {
+                            "token_chars": [
+                                "letter"
+                            ],
+                            "min_gram": "2",
+                            "type": "edge_ngram",
+                            "max_gram": "10"
+                        }
+                    }
+                },
+                "number_of_replicas": "1"
+            }
+        }
+    }
+}

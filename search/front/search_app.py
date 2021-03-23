@@ -1,12 +1,17 @@
 import pickle
+import os
+import time
 
 from flask import Flask
 from flask import redirect
 from flask import render_template
 from flask import request
 
-from linear_search import *
+from queries import Query
 from os import listdir
+
+#DATA_DIR = '/tmp/clean_files' #'../../clean_files'
+
 
 app = Flask(__name__, template_folder='templates', static_folder='templates')
 
@@ -25,13 +30,13 @@ def get_like_value(like_str):
 
 @app.route('/')
 def search_form():
+    query = Query('elasticsearch', 9200)
+
     param_dict = request.args.to_dict()
     current_query = param_dict['q'].strip() if 'q' in param_dict else ''
     current_cat = param_dict['cat'].strip().lower() if 'cat' in param_dict else ''
     
-    documents, filenames = get_relevant_documents(current_query) 
-    for document, filename in zip(documents, filenames):
-        document["doc_id"] = filename[:filename.find('.')]
+    documents = query.get_by_title(current_query)
 
     for document in documents:
         document["hubs"] = parse_hubs(document["hubs"])
@@ -66,15 +71,19 @@ def redirect_to_results():
 
 @app.route('/view_doc')
 def view_doc():
+    query = Query('elasticsearch', 9200)
+
     param_dict = request.args.to_dict()
     current_doc = param_dict['id'].strip() if 'id' in param_dict else ''
     
-    try:
-        print(listdir('clean_files'))
-        document = pickle.load(open(f'clean_files/{current_doc}.pkl', 'rb'))
-    except:
-        return render_template("view_doc.html", document=None)
+    # try:
+    document = query.get_by_id(current_doc)
+    # except:
+    #     return render_template("view_doc.html", document=None)
 
     document["doc_id"] = current_doc
     document["hubs"] = parse_hubs(document["hubs"])
     return render_template("view_doc.html", document=document)
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0")
