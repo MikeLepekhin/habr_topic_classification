@@ -9,6 +9,7 @@ from conllu import parse
 
 class HabrPostagging:
     def __init__(self):
+        # https://github.com/jwijffels/udpipe.models.ud.2.0/blob/master/inst/udpipe-ud-2.0-170801/russian-ud-2.0-170801.udpipe
         self.model = Model.load("russian-ud-2.0-170801.udpipe")
         self.pipeline = Pipeline(model, 'generic_tokenizer', '', '', '')
         self.reset_counter()
