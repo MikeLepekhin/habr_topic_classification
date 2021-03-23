@@ -51,13 +51,24 @@ class Query:
         res = self.es.search(index=self.index_name, body=query_object)
         return self.parse_out(res)
 
+    def get_all(self):
+        query_object = {'query': {'match_all': {}}, 'size': 9000}
+        res = self.es.search(index=self.index_name, body=query_object)
+        return self.parse_out(res)
+
     def get_by_title(self, query, relevant_hubs=None, slop=-1):
-        res = self.get_by_tag_content('title', query, relevant_hubs, slop)
+        if not len(query.strip()):
+            res = self.get_all()
+        else:
+            res = self.get_by_tag_content('title', query, relevant_hubs, slop)
         assert not relevant_hubs or len(set(relevant_hubs).intersection(set(self.parse_hubs(query['hubs'])))) != 0
         return res
 
     def get_by_text(self, query, relevant_hubs=None, slop=-1):
-        res = self.get_by_tag_content('text', query, relevant_hubs, slop)
+        if not len(query.strip()):
+            res = self.get_all()
+        else:
+            res = self.get_by_tag_content('text', query, relevant_hubs, slop)
         assert not relevant_hubs or len(set(relevant_hubs).intersection(set(self.parse_hubs(query['hubs'])))) != 0
         return res
 

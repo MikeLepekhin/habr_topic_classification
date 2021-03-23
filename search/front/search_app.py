@@ -33,13 +33,13 @@ def search_form():
     query = Query('elasticsearch', 9200)
 
     param_dict = request.args.to_dict()
-    current_query = param_dict['q'].strip() if 'q' in param_dict else ''
+    current_query = param_dict['q'].strip().lower() if 'q' in param_dict else ''
     current_cat = param_dict['cat'].strip().lower() if 'cat' in param_dict else ''
-    
     documents = query.get_by_title(current_query)
 
     for document in documents:
         document["hubs"] = parse_hubs(document["hubs"])
+
     if current_cat:
         documents = [document for document in documents if current_cat in document['hubs']]
 
@@ -48,8 +48,8 @@ def search_form():
     DOCUMENTS_PER_PAGE = 10
     pages_num = results_num // DOCUMENTS_PER_PAGE + (results_num % DOCUMENTS_PER_PAGE != 0) 
     current_page_id = int(param_dict['page']) if 'page' in param_dict else 1
-    min_doc_id = (current_page_id - 1) * 10
-    max_doc_id = min(current_page_id * 10, results_num)
+    min_doc_id = (current_page_id - 1) * DOCUMENTS_PER_PAGE
+    max_doc_id = min(current_page_id * DOCUMENTS_PER_PAGE, results_num)
 
 
     full_path = request.full_path.replace('?&', '?')
