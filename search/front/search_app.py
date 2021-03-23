@@ -83,6 +83,7 @@ def view_doc():
 
     document["doc_id"] = current_doc
     document["hubs"] = parse_hubs(document["hubs"])
+    document["text"] = document["text"].replace("\n", "<br>")
     return render_template("view_doc.html", document=document)
 
 if __name__ == "__main__":
