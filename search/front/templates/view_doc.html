@@ -18,7 +18,7 @@
                 <a href="/view_doc?id={{document.doc_id}}" class="doc_title">{{document.title}}</a>
                 <font color={{"green" if document.likes|int > 0 else "red"}}>{{document.likes}}</font>
             </h3>
-            <span>{{document.text}}</span>
+            <span>{{document.text | safe }}</span>
  	        <div class="document_bottom">
                 {% for hub in document.hubs %}
                 <a href="/?cat={{hub}}" class="page_link">{{hub}}</a>
