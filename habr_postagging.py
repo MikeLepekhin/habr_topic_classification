@@ -37,6 +37,7 @@ class HabrPostagging:
                 for word in sentence:
                     self.__update_counter(word['upos'])
                     f.write('\t'.join([word['form'], word['lemma'], word['upos'], str(word['feats'])]) + '\n')
+                f.write('\n');
 
     def tag_files(self, files, input_dir, output_dir, log=False):
         for filename in files:
