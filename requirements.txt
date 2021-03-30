@@ -2,4 +2,5 @@ razdel
 tqdm
 matplotlib
 numpy
-pickle
+conllu
+ufal.udpipe

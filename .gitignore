@@ -1,3 +1,6 @@
 .ipynb_checkpoints
 clean_files
+pos
+**/*.udpipe
 **/__pycache__
+**/*Identifier

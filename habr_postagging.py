@@ -11,7 +11,7 @@ class HabrPostagging:
     def __init__(self):
         # https://github.com/jwijffels/udpipe.models.ud.2.0/blob/master/inst/udpipe-ud-2.0-170801/russian-ud-2.0-170801.udpipe
         self.model = Model.load("russian-ud-2.0-170801.udpipe")
-        self.pipeline = Pipeline(model, 'generic_tokenizer', '', '', '')
+        self.pipeline = Pipeline(self.model, 'generic_tokenizer', '', '', '')
         self.reset_counter()
 
     def reset_counter(self):
@@ -72,4 +72,4 @@ def tag_dir_multiproc(input_dir, output_dir, num_procs):
 
 
 if __name__ == '__main__':
-    tag_dir_multiproc('clean_files', 'pos', 4)
+    tag_dir_multiproc('clean_files', 'pos', 16)
