@@ -9,7 +9,7 @@ from os import listdir
 from tqdm import tqdm
 
 def is_correct_word(word):
-    return all('a' <= ch <= 'z' for ch in word) or all('а' <= ch <= 'я' for ch in word)
+    return all('а' <= ch <= 'я' for ch in word)
 
 def calc_pmi_bigrams(text_list, remove_stopwords=True):
     punct_remover = str.maketrans('', '', string.punctuation)
@@ -40,7 +40,7 @@ def calc_pmi_bigrams(text_list, remove_stopwords=True):
         prob_word2 = words_num[bigram[1]] / total_words_num
         cur_pmi = math.log(prob_bigram) / math.log(prob_word1) / math.log(prob_word2)
         pmi_list.append((bigram, cur_pmi))
-    return sorted(pmi_list, key=lambda x: (-x[1], x[0]))
+    return sorted(pmi_list, key=lambda x: -x[1])
 
 def print_top_bigrams(text_list, k=100):
     for bigram, pmi in calc_pmi_bigrams(text_list)[:k]:
