@@ -55,7 +55,7 @@ def calc_statistics_bigrams(text_list, remove_stopwords=True):
 
         try:
             cur_dice = 2 * cur_bigram_num / \
-                       (bigrams_word1_num[bigram[0]] + bigrams_word2_num[bigram[1]] - 2 * cur_bigram_num)
+                       (bigrams_word1_num[bigram[0]] + bigrams_word2_num[bigram[1]])
         except ZeroDivisionError:
             cur_dice = float('inf')
         dice_list.append((bigram, cur_dice))
